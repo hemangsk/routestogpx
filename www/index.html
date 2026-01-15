@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maps to GPX</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MAPS TO GPX</h1>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <div class="url-input">
+                    <input 
+                        type="text" 
+                        id="url-input" 
+                        placeholder="Paste Google Maps URL here"
+                        autocomplete="off"
+                    >
+                    <button id="parse-url-btn">Parse URL</button>
+                </div>
+
+                <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <div class="file-input">
+                    <label for="kml-upload" class="file-label">
+                        <span id="file-name">Choose KML File</span>
+                    </label>
+                    <input type="file" id="kml-upload" accept=".kml">
+                </div>
+            </section>
+
+            <section class="error-section" id="error-section">
+                <p id="error-message"></p>
+            </section>
+
+            <section class="map-section" id="map-section">
+                <div id="map"></div>
+            </section>
+
+            <section class="download-section" id="download-section">
+                <button id="download-btn">Download GPX</button>
+            </section>
+        </main>
+
+        <footer>
+            <p>Map data from OpenStreetMap contributors</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
+

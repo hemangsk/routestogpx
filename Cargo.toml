@@ -1,0 +1,28 @@
+[package]
+name = "maps_to_gpx"
+version = "0.1.0"
+edition = "2021"
+description = "Convert Google Maps routes to GPX files"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde-wasm-bindgen = "0.6"
+url = "2.5"
+base64 = "0.22"
+quick-xml = "0.37"
+thiserror = "2.0"
+console_error_panic_hook = "0.1"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"
+
+[profile.release]
+opt-level = "s"
+lto = true
+

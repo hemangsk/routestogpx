@@ -1,0 +1,222 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #ffffff;
+    --fg: #000000;
+    --border: 1px solid #000000;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    margin-bottom: 2rem;
+    border-bottom: var(--border);
+    padding-bottom: 1rem;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+main {
+    flex: 1;
+}
+
+.input-section {
+    margin-bottom: 2rem;
+}
+
+.url-input {
+    display: flex;
+    gap: 0;
+}
+
+.url-input input {
+    flex: 1;
+    padding: 0.75rem;
+    border: var(--border);
+    border-right: none;
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+}
+
+.url-input input:focus {
+    background: var(--fg);
+    color: var(--bg);
+}
+
+.url-input input::placeholder {
+    color: var(--fg);
+    opacity: 0.5;
+}
+
+.url-input input:focus::placeholder {
+    color: var(--bg);
+    opacity: 0.5;
+}
+
+button {
+    padding: 0.75rem 1.5rem;
+    border: var(--border);
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+}
+
+button:hover {
+    background: var(--fg);
+    color: var(--bg);
+}
+
+button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+button:disabled:hover {
+    background: var(--bg);
+    color: var(--fg);
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: var(--border);
+}
+
+.divider span {
+    padding: 0 1rem;
+    font-size: 0.875rem;
+    text-transform: lowercase;
+}
+
+.file-input {
+    position: relative;
+}
+
+.file-input input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-label {
+    display: block;
+    padding: 0.75rem;
+    border: var(--border);
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+}
+
+.file-label:hover {
+    background: var(--fg);
+    color: var(--bg);
+}
+
+.error-section {
+    display: none;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem;
+    border: var(--border);
+}
+
+.error-section.visible {
+    display: block;
+}
+
+.map-section {
+    display: none;
+    margin-bottom: 1.5rem;
+}
+
+.map-section.visible {
+    display: block;
+}
+
+#map {
+    width: 100%;
+    height: 400px;
+    border: var(--border);
+}
+
+.download-section {
+    display: none;
+}
+
+.download-section.visible {
+    display: block;
+}
+
+#download-btn {
+    width: 100%;
+}
+
+footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: var(--border);
+    font-size: 0.75rem;
+    opacity: 0.5;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .url-input {
+        flex-direction: column;
+    }
+
+    .url-input input {
+        border-right: var(--border);
+        border-bottom: none;
+    }
+
+    h1 {
+        font-size: 1.25rem;
+    }
+}
+
