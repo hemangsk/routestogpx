@@ -125,7 +125,7 @@ fn write_metadata<W: std::io::Write>(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::types::{Coordinate, TrackSegment, Waypoint};
+    use crate::types::{Coordinate, Track, TrackSegment, Waypoint};
 
     #[test]
     fn test_write_simple_gpx() {
@@ -149,12 +149,75 @@ mod tests {
             Coordinate::new(37.7749, -122.4194),
             Coordinate::new(37.7835, -122.4089),
         ]);
-        route.add_track(crate::types::Track::new(vec![segment]));
+        route.add_track(Track::new(vec![segment]));
 
         let gpx = write(&route).unwrap();
         assert!(gpx.contains("<trk>"));
         assert!(gpx.contains("<trkseg>"));
         assert!(gpx.contains("<trkpt"));
+    }
+
+    #[test]
+    fn test_write_gpx_header() {
+        let route = Route::new();
+        let gpx = write(&route).unwrap();
+        assert!(gpx.starts_with("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
+        assert!(gpx.contains("version=\"1.1\""));
+        assert!(gpx.contains("creator=\"maps-to-gpx\""));
+        assert!(gpx.contains("xmlns=\"http://www.topografix.com/GPX/1/1\""));
+    }
+
+    #[test]
+    fn test_write_waypoint_with_elevation() {
+        let mut route = Route::new();
+        route.add_waypoint(Waypoint::new(Coordinate::with_elevation(37.7749, -122.4194, 100.5)));
+
+        let gpx = write(&route).unwrap();
+        assert!(gpx.contains("<ele>100.5</ele>"));
+    }
+
+    #[test]
+    fn test_write_track_with_name() {
+        let mut route = Route::new();
+        let segment = TrackSegment::new(vec![Coordinate::new(37.7749, -122.4194)]);
+        route.add_track(Track::with_name("My Ride".to_string(), vec![segment]));
+
+        let gpx = write(&route).unwrap();
+        assert!(gpx.contains("<name>My Ride</name>"));
+    }
+
+    #[test]
+    fn test_write_empty_route() {
+        let route = Route::new();
+        let gpx = write(&route).unwrap();
+        assert!(gpx.contains("<gpx"));
+        assert!(gpx.contains("</gpx>"));
+        assert!(gpx.contains("<metadata>"));
+    }
+
+    #[test]
+    fn test_write_multiple_tracks() {
+        let mut route = Route::new();
+        let segment1 = TrackSegment::new(vec![Coordinate::new(37.7749, -122.4194)]);
+        let segment2 = TrackSegment::new(vec![Coordinate::new(40.7128, -74.0060)]);
+        route.add_track(Track::new(vec![segment1]));
+        route.add_track(Track::new(vec![segment2]));
+
+        let gpx = write(&route).unwrap();
+        let trk_count = gpx.matches("<trk>").count();
+        assert_eq!(trk_count, 2);
+    }
+
+    #[test]
+    fn test_write_track_multiple_segments() {
+        let mut route = Route::new();
+        let segment1 = TrackSegment::new(vec![Coordinate::new(37.7749, -122.4194)]);
+        let segment2 = TrackSegment::new(vec![Coordinate::new(37.7835, -122.4089)]);
+        route.add_track(Track::new(vec![segment1, segment2]));
+
+        let gpx = write(&route).unwrap();
+        let trkseg_count = gpx.matches("<trkseg>").count();
+        assert_eq!(trkseg_count, 2);
     }
 }
 

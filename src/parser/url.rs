@@ -191,5 +191,50 @@ mod tests {
         let result = parse(url);
         assert!(matches!(result, Err(UrlParseError::NotGoogleMaps)));
     }
+
+    #[test]
+    fn test_parse_url_with_two_coordinates() {
+        let url = "https://www.google.com/maps/dir/40.7128,-74.0060/40.7580,-73.9855";
+        let route = parse(url).unwrap();
+        assert_eq!(route.waypoints.len(), 2);
+        assert_eq!(route.waypoints[0].name, Some("Start".to_string()));
+        assert_eq!(route.waypoints[1].name, Some("End".to_string()));
+    }
+
+    #[test]
+    fn test_parse_url_creates_track() {
+        let url = "https://www.google.com/maps/dir/37.7749,-122.4194/37.7835,-122.4089";
+        let route = parse(url).unwrap();
+        assert_eq!(route.tracks.len(), 1);
+        assert_eq!(route.tracks[0].segments[0].points.len(), 2);
+    }
+
+    #[test]
+    fn test_invalid_url_format() {
+        let url = "not a valid url at all";
+        let result = parse(url);
+        assert!(matches!(result, Err(UrlParseError::InvalidUrl(_))));
+    }
+
+    #[test]
+    fn test_google_maps_url_without_dir() {
+        let url = "https://www.google.com/maps/@37.7749,-122.4194,14z";
+        let result = parse(url);
+        assert!(matches!(result, Err(UrlParseError::NoRouteData)));
+    }
+
+    #[test]
+    fn test_maps_app_goo_gl_domain() {
+        let url = "https://maps.app.goo.gl/abc123";
+        let result = parse(url);
+        assert!(matches!(result, Err(UrlParseError::NoRouteData)));
+    }
+
+    #[test]
+    fn test_coordinate_validation() {
+        let url = "https://www.google.com/maps/dir/91.0,-122.4194/37.7835,-122.4089";
+        let route = parse(url).unwrap();
+        assert_eq!(route.waypoints.len(), 1);
+    }
 }
 

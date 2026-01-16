@@ -78,5 +78,34 @@ mod tests {
         assert!((coords[0].lat - 38.5).abs() < 0.001);
         assert!((coords[0].lon - (-120.2)).abs() < 0.001);
     }
+
+    #[test]
+    fn test_decode_single_point() {
+        let encoded = "_p~iF~ps|U";
+        let coords = decode(encoded).unwrap();
+        assert_eq!(coords.len(), 1);
+    }
+
+    #[test]
+    fn test_decode_empty_string() {
+        let encoded = "";
+        let coords = decode(encoded).unwrap();
+        assert!(coords.is_empty());
+    }
+
+    #[test]
+    fn test_decode_invalid_characters() {
+        let encoded = "!!!invalid!!!";
+        let result = decode(encoded);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_decode_coordinate_precision() {
+        let encoded = "_p~iF~ps|U";
+        let coords = decode(encoded).unwrap();
+        assert!((coords[0].lat - 38.5).abs() < 0.00001);
+        assert!((coords[0].lon - (-120.2)).abs() < 0.00001);
+    }
 }
 

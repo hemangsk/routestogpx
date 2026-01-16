@@ -164,5 +164,59 @@ mod tests {
         assert_eq!(route.tracks.len(), 1);
         assert_eq!(route.tracks[0].segments[0].points.len(), 3);
     }
+
+    #[test]
+    fn test_parse_kml_multiple_waypoints() {
+        let kml = r#"<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <Placemark>
+      <name>Point A</name>
+      <Point><coordinates>-122.4194,37.7749,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Point B</name>
+      <Point><coordinates>-122.4089,37.7835,100</coordinates></Point>
+    </Placemark>
+  </Document>
+</kml>"#;
+
+        let route = parse(kml).unwrap();
+        assert_eq!(route.waypoints.len(), 2);
+        assert_eq!(route.waypoints[0].name, Some("Point A".to_string()));
+        assert_eq!(route.waypoints[1].name, Some("Point B".to_string()));
+        assert_eq!(route.waypoints[1].coord.ele, Some(100.0));
+    }
+
+    #[test]
+    fn test_parse_kml_empty_document() {
+        let kml = r#"<?xml version="1.0"?><kml><Document></Document></kml>"#;
+        let route = parse(kml).unwrap();
+        assert!(route.waypoints.is_empty());
+        assert!(route.tracks.is_empty());
+    }
+
+    #[test]
+    fn test_parse_kml_coordinates_without_elevation() {
+        let kml = r#"<?xml version="1.0"?>
+<kml><Document><Placemark><Point><coordinates>-122.4,37.7</coordinates></Point></Placemark></Document></kml>"#;
+        let route = parse(kml).unwrap();
+        assert_eq!(route.waypoints.len(), 1);
+        assert!(route.waypoints[0].coord.ele.is_none());
+    }
+
+    #[test]
+    fn test_parse_kml_linestring_with_name() {
+        let kml = r#"<?xml version="1.0"?>
+<kml><Document>
+  <Placemark>
+    <name>My Track</name>
+    <LineString><coordinates>-122.4,37.7,0 -122.3,37.8,0</coordinates></LineString>
+  </Placemark>
+</Document></kml>"#;
+        let route = parse(kml).unwrap();
+        assert_eq!(route.tracks.len(), 1);
+        assert_eq!(route.tracks[0].name, Some("My Track".to_string()));
+    }
 }
 
