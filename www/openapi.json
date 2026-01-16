@@ -1,0 +1,100 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Routes to GPX API",
+    "description": "Convert Google Maps URLs and KML files to GPX format for GPS devices",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Routes to GPX",
+      "url": "https://routestogpx.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://routestogpx.com",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/api/convert": {
+      "post": {
+        "operationId": "convertToGpx",
+        "summary": "Convert Google Maps URL or KML to GPX",
+        "description": "Converts a Google Maps directions URL or KML file content to GPX format for GPS devices like Garmin and Wahoo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["type", "input"],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["url", "kml"],
+                    "description": "Input type: 'url' for Google Maps URL, 'kml' for KML content"
+                  },
+                  "input": {
+                    "type": "string",
+                    "description": "The Google Maps directions URL (e.g., https://www.google.com/maps/dir/...) or KML XML content"
+                  }
+                }
+              },
+              "examples": {
+                "googleMapsUrl": {
+                  "summary": "Convert Google Maps URL",
+                  "value": {
+                    "type": "url",
+                    "input": "https://www.google.com/maps/dir/37.7749,-122.4194/37.7835,-122.4089"
+                  }
+                },
+                "kmlContent": {
+                  "summary": "Convert KML content",
+                  "value": {
+                    "type": "kml",
+                    "input": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><kml xmlns=\"http://www.opengis.net/kml/2.2\"><Document><Placemark><LineString><coordinates>-122.4194,37.7749,0 -122.4089,37.7835,0</coordinates></LineString></Placemark></Document></kml>"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful conversion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "gpx": {
+                      "type": "string",
+                      "description": "The GPX XML content"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

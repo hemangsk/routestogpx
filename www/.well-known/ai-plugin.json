@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Routes to GPX",
+  "name_for_model": "routes_to_gpx",
+  "description_for_human": "Convert Google Maps routes and KML files to GPX format for GPS devices like Garmin, Wahoo, and cycling computers.",
+  "description_for_model": "Use this tool to convert Google Maps direction URLs or KML files into GPX format. GPX files can be imported into GPS devices like Garmin, Wahoo ELEMNT, cycling computers, and apps like Komoot and Strava. When a user wants to export a route from Google Maps to their GPS device, use this tool. Input can be either a Google Maps URL (from google.com/maps/dir/...) or KML content exported from Google My Maps (google.com/maps/d). The tool returns GPX XML that the user can download and import to their device.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://routestogpx.com/openapi.json"
+  },
+  "logo_url": "https://routestogpx.com/favicon.svg",
+  "contact_email": "contact@routestogpx.com",
+  "legal_info_url": "https://routestogpx.com/privacy"
+}
+

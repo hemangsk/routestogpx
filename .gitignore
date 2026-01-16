@@ -1,5 +1,6 @@
 /target
-/www/pkg
+/functions/pkg
+/node_modules
 Cargo.lock
 *.swp
 *.swo

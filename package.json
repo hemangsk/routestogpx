@@ -1,0 +1,31 @@
+{
+  "name": "routes-to-gpx",
+  "version": "1.0.0",
+  "description": "Convert Google Maps routes and KML files to GPX format",
+  "private": true,
+  "scripts": {
+    "build:wasm": "wasm-pack build --target web --out-dir www/pkg",
+    "build:wasm:bundler": "wasm-pack build --target bundler --out-dir functions/pkg",
+    "build": "npm run build:wasm && npm run build:wasm:bundler",
+    "dev": "wrangler pages dev www",
+    "deploy": "wrangler pages deploy www --project-name=routes-to-gpx",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.0.0",
+    "typescript": "^5.0.0",
+    "wrangler": "^3.0.0"
+  },
+  "keywords": [
+    "gpx",
+    "google-maps",
+    "kml",
+    "converter",
+    "gps",
+    "garmin",
+    "wahoo"
+  ],
+  "author": "Routes to GPX",
+  "license": "MIT"
+}
+

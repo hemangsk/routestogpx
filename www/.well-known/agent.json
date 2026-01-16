@@ -1,0 +1,78 @@
+{
+  "name": "Routes to GPX",
+  "description": "Convert Google Maps direction URLs and KML files exported from Google My Maps to GPX format for GPS devices like Garmin, Wahoo, and cycling computers",
+  "url": "https://routestogpx.com",
+  "version": "1.0.0",
+  "provider": {
+    "name": "Routes to GPX",
+    "url": "https://routestogpx.com/about"
+  },
+  "capabilities": {
+    "tools": true,
+    "streaming": false
+  },
+  "skills": [
+    {
+      "id": "convert_google_maps_url_to_gpx",
+      "name": "Convert Google Maps URL to GPX",
+      "description": "Extracts route coordinates from a Google Maps directions URL and converts to GPX format. Input: Google Maps URL (e.g., https://www.google.com/maps/dir/...). Output: GPX XML string.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Google Maps directions URL"
+          }
+        },
+        "required": ["url"]
+      },
+      "output": {
+        "type": "string",
+        "format": "application/gpx+xml",
+        "description": "GPX XML content"
+      }
+    },
+    {
+      "id": "convert_kml_to_gpx",
+      "name": "Convert KML to GPX",
+      "description": "Converts KML file content (exported from Google My Maps at google.com/maps/d) to GPX format. Input: KML XML string. Output: GPX XML string.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "kml": {
+            "type": "string",
+            "description": "KML file content as XML string"
+          }
+        },
+        "required": ["kml"]
+      },
+      "output": {
+        "type": "string",
+        "format": "application/gpx+xml",
+        "description": "GPX XML content"
+      }
+    }
+  ],
+  "endpoints": {
+    "api": "https://routestogpx.com/api/convert",
+    "mcp": "https://routestogpx.com/api/mcp"
+  },
+  "authentication": "none",
+  "privacy": {
+    "data_collection": false,
+    "data_storage": false,
+    "processing_location": "client-side"
+  },
+  "supported_devices": [
+    "Garmin Edge",
+    "Garmin Forerunner",
+    "Garmin Fenix",
+    "Wahoo ELEMNT",
+    "Wahoo ROAM",
+    "Hammerhead Karoo",
+    "Komoot",
+    "Strava",
+    "RideWithGPS"
+  ]
+}
+

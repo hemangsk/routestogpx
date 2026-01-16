@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#000"/>
+  
+  <path d="M200 400 L400 250 L600 350 L800 200 L1000 300" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+  
+  <circle cx="200" cy="400" r="8" fill="#fff" opacity="0.3"/>
+  <circle cx="400" cy="250" r="8" fill="#fff" opacity="0.3"/>
+  <circle cx="600" cy="350" r="8" fill="#fff" opacity="0.3"/>
+  <circle cx="800" cy="200" r="8" fill="#fff" opacity="0.3"/>
+  <circle cx="1000" cy="300" r="8" fill="#fff" opacity="0.3"/>
+  
+  <text x="600" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="700" fill="#fff" text-anchor="middle" letter-spacing="0.05em">ROUTES TO GPX</text>
+  
+  <text x="600" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="28" fill="#fff" text-anchor="middle" opacity="0.7">Convert Google Maps to GPX for Garmin, Wahoo &amp; GPS</text>
+  
+  <text x="600" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="#fff" text-anchor="middle" opacity="0.5">Free - No Signup - Works Offline</text>
+  
+  <text x="600" y="560" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#fff" text-anchor="middle" opacity="0.4">routestogpx.com</text>
+</svg>
+

@@ -1,8 +1,8 @@
 [package]
-name = "maps_to_gpx"
+name = "routes_to_gpx"
 version = "0.1.0"
 edition = "2021"
-description = "Convert Google Maps routes to GPX files - Routes to GPX"
+description = "Convert Google Maps routes to GPX files"
 license = "MIT"
 
 [lib]

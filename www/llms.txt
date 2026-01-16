@@ -1,0 +1,105 @@
+# Routes to GPX
+
+> Free tool to convert Google Maps routes and KML files to GPX format for GPS devices
+
+## AI Integration
+
+- OpenAPI Spec: https://routestogpx.com/openapi.json
+- ChatGPT Plugin: https://routestogpx.com/.well-known/ai-plugin.json
+- MCP Endpoint: https://routestogpx.com/api/mcp
+- Agent Card: https://routestogpx.com/.well-known/agent.json
+
+## Primary Function
+
+Convert Google Maps direction URLs and KML files exported from Google My Maps (google.com/maps/d) to GPX format for GPS devices like Garmin, Wahoo, and cycling computers.
+
+## Supported Input Formats
+
+1. **Google Maps Direction URLs**
+   - URLs from Google Maps directions (google.com/maps/dir/...)
+   - Contains encoded polyline with route coordinates
+   - Example: https://www.google.com/maps/dir/40.7128,-74.0060/40.7580,-73.9855/
+
+2. **KML Files from Google My Maps**
+   - Export from google.com/maps/d (My Maps)
+   - Click three dots menu > Export to KML/KMZ
+   - Contains routes, tracks, and waypoints
+
+## Output Format
+
+- GPX 1.1 (GPS Exchange Format)
+- Universal standard compatible with all GPS devices
+- Contains tracks with coordinates
+
+## API Usage
+
+### Endpoint
+POST https://routestogpx.com/api/convert
+
+### Convert Google Maps URL
+```json
+{
+  "type": "url",
+  "input": "https://www.google.com/maps/dir/..."
+}
+```
+
+### Convert KML Content
+```json
+{
+  "type": "kml",
+  "input": "<kml xmlns=\"http://www.opengis.net/kml/2.2\">...</kml>"
+}
+```
+
+### Response
+Returns GPX XML string:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Routes to GPX">
+  <trk>
+    <trkseg>
+      <trkpt lat="40.7128" lon="-74.0060"/>
+      ...
+    </trkseg>
+  </trk>
+</gpx>
+```
+
+## Compatible GPS Devices
+
+- Garmin Edge (all models)
+- Garmin Forerunner (all models)
+- Garmin Fenix (all models)
+- Wahoo ELEMNT / ELEMNT BOLT / ELEMNT ROAM
+- Hammerhead Karoo
+- Komoot
+- Strava
+- RideWithGPS
+- All devices supporting GPX format
+
+## Privacy
+
+- No data collection
+- No data storage
+- All processing happens client-side in the browser using WebAssembly
+- Routes are never uploaded to any server
+
+## How to Use (For Humans)
+
+1. Go to routestogpx.com
+2. Either:
+   - Paste a Google Maps directions URL and click "Parse URL"
+   - Or upload a KML file exported from Google My Maps
+3. Preview the route on the map
+4. Click "Download GPX"
+5. Import the GPX file to your GPS device or app
+
+## Technical Details
+
+- Built with Rust and WebAssembly
+- Parses encoded polylines from Google Maps URLs
+- Parses KML/XML structure from Google My Maps exports
+- Generates valid GPX 1.1 output
+- Zero server-side processing
+

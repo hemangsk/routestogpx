@@ -3,17 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Routes to GPX</title>
+
+    <title>Routes to GPX - Convert Google Maps to GPX for Garmin, Wahoo & GPS</title>
+    <meta name="description" content="Free online tool to convert Google Maps routes and KML files to GPX format. Works with Garmin, Wahoo, Komoot and all GPS devices. No signup required.">
+    <meta name="keywords" content="google maps to gpx, kml to gpx converter, gpx converter, garmin route converter, wahoo route import, google my maps to gpx">
+    <meta name="author" content="Routes to GPX">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://routestogpx.com/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://routestogpx.com/">
+    <meta property="og:title" content="Routes to GPX - Free Google Maps to GPX Converter">
+    <meta property="og:description" content="Convert Google Maps routes to GPX files for your GPS device. Free, fast, no signup.">
+    <meta property="og:image" content="https://routestogpx.com/og-image.svg">
+    <meta property="og:site_name" content="Routes to GPX">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Routes to GPX - Free Google Maps to GPX Converter">
+    <meta name="twitter:description" content="Convert Google Maps routes to GPX files for your GPS device.">
+    <meta name="twitter:image" content="https://routestogpx.com/og-image.svg">
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="theme-color" content="#000000">
+
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preload" href="/pkg/routes_to_gpx_bg.wasm" as="fetch" crossorigin>
+    <link rel="preload" href="/styles.css" as="style">
+
     <link rel="stylesheet" href="styles.css">
     <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+
+    <script type="application/ld+json">
+    [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Routes to GPX",
+            "url": "https://routestogpx.com",
+            "description": "Convert Google Maps direction URLs and KML files exported from Google My Maps to GPX format for GPS devices",
+            "applicationCategory": "UtilityApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript and WebAssembly",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "creator": {
+                "@type": "Organization",
+                "name": "Routes to GPX",
+                "url": "https://routestogpx.com"
+            },
+            "featureList": [
+                "Convert Google Maps direction URLs to GPX",
+                "Convert KML files from Google My Maps to GPX",
+                "Preview routes on interactive map",
+                "Download GPX for Garmin, Wahoo, and other GPS devices",
+                "No signup required",
+                "All processing in browser - no data uploaded"
+            ]
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "How do I convert Google Maps directions to GPX?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Copy your Google Maps directions URL from your browser and paste it into Routes to GPX. Click Parse URL, preview the route on the map, then click Download GPX."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How do I convert Google My Maps to GPX?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Open your map at google.com/maps/d, click the three dots menu, select Export to KML/KMZ, download the KML file, then upload it to Routes to GPX."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Is Routes to GPX free?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes, Routes to GPX is completely free with no signup required. All processing happens in your browser using WebAssembly - no data is sent to any server."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "What GPS devices work with GPX files?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "GPX files work with Garmin Edge, Garmin Forerunner, Wahoo ELEMNT, Wahoo ROAM, Hammerhead Karoo, Komoot, Strava, RideWithGPS, and virtually all GPS cycling computers and watches."
+                    }
+                }
+            ]
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            "name": "How to Convert Google Maps Route to GPX",
+            "description": "Step-by-step guide to convert Google Maps directions or Google My Maps to GPX file for GPS devices",
+            "totalTime": "PT1M",
+            "step": [
+                {
+                    "@type": "HowToStep",
+                    "position": 1,
+                    "name": "Get your route",
+                    "text": "Either copy a Google Maps directions URL from your browser, or export a KML file from Google My Maps (google.com/maps/d)"
+                },
+                {
+                    "@type": "HowToStep",
+                    "position": 2,
+                    "name": "Input the route",
+                    "text": "Paste the Google Maps URL into the input field, or click Choose KML File to upload your exported KML"
+                },
+                {
+                    "@type": "HowToStep",
+                    "position": 3,
+                    "name": "Preview and download",
+                    "text": "Click Parse URL or upload your file, preview the route on the map, then click Download GPX to save the file"
+                }
+            ]
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://routestogpx.com"
+                }
+            ]
+        }
+    ]
+    </script>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>ROUTES TO GPX</h1>
+            <p class="tagline">Convert Google Maps to GPX for Garmin, Wahoo & GPS Devices</p>
         </header>
 
         <main>
+            <section class="answer-block">
+                <h2>How to Convert Google Maps to GPX</h2>
+                <p><strong>To convert Google Maps to GPX:</strong> Paste a Google Maps directions URL or upload a KML file exported from Google My Maps. Click Parse URL or upload your file, preview the route, then Download GPX. Works with Garmin, Wahoo, and all GPS devices. Free, instant, no signup required.</p>
+            </section>
+
             <section class="input-section">
                 <div class="url-input">
                     <input 
@@ -21,6 +164,7 @@
                         id="url-input" 
                         placeholder="Paste Google Maps URL here"
                         autocomplete="off"
+                        aria-label="Google Maps URL input"
                     >
                     <button id="parse-url-btn">Parse URL</button>
                 </div>
@@ -31,27 +175,76 @@
 
                 <div class="file-input">
                     <label for="kml-upload" class="file-label">
-                        <span id="file-name">Choose KML File</span>
+                        <span id="file-name">Choose KML File (from Google My Maps)</span>
                     </label>
-                    <input type="file" id="kml-upload" accept=".kml">
+                    <input type="file" id="kml-upload" accept=".kml" aria-label="KML file upload">
                 </div>
             </section>
 
-            <section class="error-section" id="error-section">
+            <section class="error-section" id="error-section" role="alert">
                 <p id="error-message"></p>
             </section>
 
             <section class="map-section" id="map-section">
-                <div id="map"></div>
+                <div id="map" role="img" aria-label="Route preview map"></div>
             </section>
 
             <section class="download-section" id="download-section">
                 <button id="download-btn">Download GPX</button>
             </section>
+
+            <section class="how-to">
+                <h2>How It Works</h2>
+                <ol class="steps">
+                    <li>
+                        <strong>Get your route</strong>
+                        <p>Copy a Google Maps directions URL from your browser, or export a KML file from Google My Maps (google.com/maps/d)</p>
+                    </li>
+                    <li>
+                        <strong>Input the route</strong>
+                        <p>Paste the URL or upload your KML file</p>
+                    </li>
+                    <li>
+                        <strong>Download GPX</strong>
+                        <p>Preview your route on the map, then download the GPX file for your GPS device</p>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="faq">
+                <h2>Frequently Asked Questions</h2>
+                <details>
+                    <summary>How do I convert Google Maps directions to GPX?</summary>
+                    <p>Copy your Google Maps directions URL from your browser and paste it into Routes to GPX. Click Parse URL, preview the route on the map, then Download GPX.</p>
+                </details>
+                <details>
+                    <summary>How do I convert Google My Maps to GPX?</summary>
+                    <p>Open your map at google.com/maps/d, click the three dots menu, select "Export to KML/KMZ", download the KML file, then upload it to Routes to GPX.</p>
+                </details>
+                <details>
+                    <summary>Is Routes to GPX free?</summary>
+                    <p>Yes, Routes to GPX is completely free with no signup required. All processing happens in your browser using WebAssembly - no data is sent to any server.</p>
+                </details>
+                <details>
+                    <summary>What GPS devices work with GPX files?</summary>
+                    <p>GPX files work with Garmin Edge, Garmin Forerunner, Wahoo ELEMNT, Wahoo ROAM, Hammerhead Karoo, Komoot, Strava, RideWithGPS, and virtually all GPS cycling computers and watches.</p>
+                </details>
+                <details>
+                    <summary>Is my data private?</summary>
+                    <p>Yes. All route processing happens directly in your browser using WebAssembly. Your routes are never uploaded to any server. We don't collect, store, or have access to your route data.</p>
+                </details>
+            </section>
         </main>
 
         <footer>
-            <p>Map data from OpenStreetMap contributors</p>
+            <nav class="footer-nav">
+                <a href="/about">About</a>
+                <a href="/privacy">Privacy Policy</a>
+                <a href="mailto:contact@routestogpx.com">Contact</a>
+            </nav>
+            <p>Made for cyclists, runners, and outdoor enthusiasts</p>
+            <p>No data stored. All processing happens in your browser.</p>
+            <p class="copyright">Map data from OpenStreetMap contributors</p>
         </footer>
     </div>
 
@@ -59,4 +252,3 @@
     <script type="module" src="app.js"></script>
 </body>
 </html>
-

@@ -1,0 +1,17 @@
+{
+  "name": "routes_to_gpx",
+  "type": "module",
+  "description": "Convert Google Maps routes to GPX files",
+  "version": "0.1.0",
+  "license": "MIT",
+  "files": [
+    "routes_to_gpx_bg.wasm",
+    "routes_to_gpx.js",
+    "routes_to_gpx.d.ts"
+  ],
+  "main": "routes_to_gpx.js",
+  "types": "routes_to_gpx.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

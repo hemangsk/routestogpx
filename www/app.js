@@ -1,4 +1,4 @@
-import init, { parse_google_maps_url, parse_kml, route_to_gpx } from './pkg/maps_to_gpx.js';
+import init, { parse_google_maps_url, parse_kml, route_to_gpx } from './pkg/routes_to_gpx.js';
 
 let wasm;
 let map;
