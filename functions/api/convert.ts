@@ -8,6 +8,23 @@ interface ConvertRequest {
   input: string;
 }
 
+async function expandShortUrl(url: string): Promise<string> {
+  const shortDomains = ['goo.gl', 'maps.app.goo.gl', 'g.co'];
+  const urlObj = new URL(url);
+  
+  const isShortUrl = shortDomains.some(domain => urlObj.hostname.includes(domain));
+  if (!isShortUrl) {
+    return url;
+  }
+
+  const response = await fetch(url, {
+    method: 'HEAD',
+    redirect: 'follow',
+  });
+  
+  return response.url;
+}
+
 export const onRequestGet: PagesFunction = async (context) => {
   const url = new URL(context.request.url);
   const inputUrl = url.searchParams.get("url");
@@ -23,7 +40,8 @@ export const onRequestGet: PagesFunction = async (context) => {
   }
 
   try {
-    const route = parse_google_maps_url(inputUrl);
+    const expandedUrl = await expandShortUrl(inputUrl);
+    const route = parse_google_maps_url(expandedUrl);
     const gpx = route_to_gpx(route);
 
     return new Response(gpx, {
@@ -59,7 +77,8 @@ export const onRequestPost: PagesFunction = async (context) => {
 
     let route;
     if (body.type === "url") {
-      route = parse_google_maps_url(body.input);
+      const expandedUrl = await expandShortUrl(body.input);
+      route = parse_google_maps_url(expandedUrl);
     } else if (body.type === "kml") {
       route = parse_kml(body.input);
     } else {

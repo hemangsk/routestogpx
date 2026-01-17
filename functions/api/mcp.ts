@@ -21,16 +21,33 @@ interface McpResponse {
   };
 }
 
+async function expandShortUrl(url: string): Promise<string> {
+  const shortDomains = ['goo.gl', 'maps.app.goo.gl', 'g.co'];
+  const urlObj = new URL(url);
+  
+  const isShortUrl = shortDomains.some(domain => urlObj.hostname.includes(domain));
+  if (!isShortUrl) {
+    return url;
+  }
+
+  const response = await fetch(url, {
+    method: 'HEAD',
+    redirect: 'follow',
+  });
+  
+  return response.url;
+}
+
 const TOOL_DEFINITIONS = [
   {
     name: "convert_google_maps_url_to_gpx",
-    description: "Convert a Google Maps directions URL to GPX format for GPS devices",
+    description: "Convert a Google Maps directions URL (including short URLs like maps.app.goo.gl) to GPX format for GPS devices",
     inputSchema: {
       type: "object",
       properties: {
         url: {
           type: "string",
-          description: "Google Maps directions URL (e.g., https://www.google.com/maps/dir/...)",
+          description: "Google Maps directions URL (e.g., https://www.google.com/maps/dir/... or https://maps.app.goo.gl/...)",
         },
       },
       required: ["url"],
@@ -56,16 +73,17 @@ function handleToolsList(): McpResponse["result"] {
   return { tools: TOOL_DEFINITIONS };
 }
 
-function handleToolCall(
+async function handleToolCall(
   name: string,
   args: Record<string, unknown>
-): { content: Array<{ type: string; text: string }> } {
+): Promise<{ content: Array<{ type: string; text: string }> }> {
   if (name === "convert_google_maps_url_to_gpx") {
     const url = args.url as string;
     if (!url) {
       throw new Error("Missing 'url' argument");
     }
-    const route = parse_google_maps_url(url);
+    const expandedUrl = await expandShortUrl(url);
+    const route = parse_google_maps_url(expandedUrl);
     const gpx = route_to_gpx(route);
     return {
       content: [{ type: "text", text: gpx }],
@@ -155,7 +173,7 @@ export const onRequestPost: PagesFunction = async (context) => {
       case "tools/call":
         try {
           const params = request.params as { name: string; arguments: Record<string, unknown> };
-          const result = handleToolCall(params.name, params.arguments || {});
+          const result = await handleToolCall(params.name, params.arguments || {});
           response = createResponse(request.id, result);
         } catch (error) {
           response = createErrorResponse(

@@ -58,6 +58,26 @@ pub fn parse(url_str: &str) -> Result<Route, UrlParseError> {
     }
 
     if route.waypoints.is_empty() && route.tracks.is_empty() {
+        if let Some(coords) = extract_coordinates_from_data(&url) {
+            for (i, coord) in coords.iter().enumerate() {
+                let name = if i == 0 {
+                    "Start".to_string()
+                } else if i == coords.len() - 1 {
+                    "End".to_string()
+                } else {
+                    format!("Waypoint {}", i)
+                };
+                route.add_waypoint(Waypoint::with_name(coord.clone(), name));
+            }
+
+            if coords.len() >= 2 {
+                let segment = TrackSegment::new(coords);
+                route.add_track(Track::new(vec![segment]));
+            }
+        }
+    }
+
+    if route.waypoints.is_empty() && route.tracks.is_empty() {
         return Err(UrlParseError::NoRouteData);
     }
 
@@ -131,6 +151,41 @@ fn urlencoding_decode(s: &str) -> String {
     }
 
     result
+}
+
+fn extract_coordinates_from_data(url: &Url) -> Option<Vec<Coordinate>> {
+    let full_url = url.as_str();
+    
+    let data_str = if let Some(data_start) = full_url.find("data=") {
+        &full_url[data_start..]
+    } else {
+        return None;
+    };
+
+    let parts: Vec<&str> = data_str.split('!').collect();
+    let mut coordinates = Vec::new();
+    let mut current_lon: Option<f64> = None;
+
+    for part in &parts {
+        if part.starts_with("1d") {
+            if let Ok(lon) = part[2..].parse::<f64>() {
+                current_lon = Some(lon);
+            }
+        } else if part.starts_with("2d") {
+            if let (Some(lon), Ok(lat)) = (current_lon, part[2..].parse::<f64>()) {
+                if (-90.0..=90.0).contains(&lat) && (-180.0..=180.0).contains(&lon) {
+                    coordinates.push(Coordinate::new(lat, lon));
+                }
+                current_lon = None;
+            }
+        }
+    }
+
+    if coordinates.is_empty() {
+        None
+    } else {
+        Some(coordinates)
+    }
 }
 
 fn extract_polyline_from_data(url: &Url) -> Option<String> {
@@ -235,6 +290,23 @@ mod tests {
         let url = "https://www.google.com/maps/dir/91.0,-122.4194/37.7835,-122.4089";
         let route = parse(url).unwrap();
         assert_eq!(route.waypoints.len(), 1);
+    }
+
+    #[test]
+    fn test_parse_url_with_data_coordinates() {
+        let url = "https://www.google.com/maps/dir/Place+A/Place+B/@25.5,84.8,14z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x123!2m2!1d84.8512966!2d25.5356448!1m5!1m1!1s0x456!2m2!1d84.8840545!2d25.591585!3e0";
+        let route = parse(url).unwrap();
+        assert_eq!(route.waypoints.len(), 2);
+        assert!((route.waypoints[0].coord.lat - 25.5356448).abs() < 0.0001);
+        assert!((route.waypoints[0].coord.lon - 84.8512966).abs() < 0.0001);
+    }
+
+    #[test]
+    fn test_parse_expanded_short_url() {
+        let url = "https://www.google.com/maps/dir/IIT+Patna,+Bihta+Kanpa+Road,+Patna,+Dayalpur+Daulatpur,+Bihar/HVWH%2B3W+Bihta+Airport,+Dekuli,+Bihar+801103/@25.5666066,84.8477856,14z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x39ed577f6954a4ab:0x6ce8f1b9fc2aa02a!2m2!1d84.8512966!2d25.5356448!1m5!1m1!1s0x3992ab257eb68047:0x22bc522cc726e04f!2m2!1d84.8840545!2d25.591585!3e0";
+        let route = parse(url).unwrap();
+        assert_eq!(route.waypoints.len(), 2);
+        assert_eq!(route.tracks.len(), 1);
     }
 }
 
